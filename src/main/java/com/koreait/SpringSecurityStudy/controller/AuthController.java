@@ -1,5 +1,6 @@
 package com.koreait.SpringSecurityStudy.controller;
 
+import com.koreait.SpringSecurityStudy.dto.ModifyEmailReqDto;
 import com.koreait.SpringSecurityStudy.dto.SigninReqDto;
 import com.koreait.SpringSecurityStudy.dto.SignupReqDto;
 import com.koreait.SpringSecurityStudy.service.AuthService;
@@ -31,7 +32,12 @@ public class AuthController {
     }
 
     @GetMapping("/principal")
-    public ResponseEntity<?> getPrincipal () {
+    public ResponseEntity<?> getPrincipal() {
         return ResponseEntity.ok(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    @PostMapping("/{userId}")
+    public ResponseEntity<?> modifyEMail(@PathVariable Integer userId, @RequestBody ModifyEmailReqDto modifyEmailReqDto) {
+        return ResponseEntity.ok(authService.modifyEmail(userId, modifyEmailReqDto));
     }
 }
