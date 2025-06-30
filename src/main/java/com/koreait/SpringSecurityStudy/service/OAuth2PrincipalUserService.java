@@ -40,7 +40,7 @@ public class OAuth2PrincipalUserService extends DefaultOAuth2UserService {
         switch (provider) {
             case "google":
                 id = attributes.get("sub").toString();
-                email = (String) attributes.get("eamil");
+                email = (String) attributes.get("email");
                 break;
         }
 
