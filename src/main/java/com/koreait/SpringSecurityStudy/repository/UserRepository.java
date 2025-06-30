@@ -33,11 +33,9 @@ public class UserRepository {
 
     public int updateEmail(User user) {
         return userMapper.updateEmail(user);
-
     }
 
     public int updatePassword(Integer userId, String password) {
         return userMapper.updatePassword(userId, password);
-
     }
 }

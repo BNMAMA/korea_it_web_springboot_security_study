@@ -33,6 +33,7 @@ public class JwtUtil {
     public boolean isBearer(String token) {
         if (token == null) {
             return false;
+
         }
         if (!token.startsWith("Bearer ")) {
             return false;
@@ -44,15 +45,16 @@ public class JwtUtil {
         return bearerToken.replaceFirst("Bearer ", "");
     }
 
-    //Claims : JWT의 Payload영역, 사용자 정보, 만료일자 등 담겨있음
-    //JwtException : 토큰이 잘못되어있을 경우 (위변조, 만료 등) 발생하는 예외
+    /*Claims : JWT의 Payload영역, 사용자 정보, 만료일자 등 담겨있음
+    * JwtException : 토큰이 잘못되어있을 경우 (위변조, 만료 등) 발생하는 예외*/
     public Claims getClaims(String token) throws JwtException {
         JwtParserBuilder jwtParserBuilder = Jwts.parser();
         //Jwts.parser()는 JwtParserBuilder 객체를 반환
         //JWT 파서를 구성할 수 있는 빌더 (parser 설정 작업을 체이닝으로 가능하게 함)
-        jwtParserBuilder.setSigningKey(KEY);//토큰의 서명을 검증하기 위해 비밀키 설정
+        jwtParserBuilder.setSigningKey(KEY);//토큰의 서명을 검증하기 위해서 비밀키 설정
         JwtParser jwtParser = jwtParserBuilder.build();//설정이 완료된 파서를 빌드해서 최종 JwtParser 객체 생성
         return jwtParser.parseClaimsJws(token).getBody();//순수 Claims JWT를 파싱
     }
+
 
 }

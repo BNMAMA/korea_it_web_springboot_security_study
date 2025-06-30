@@ -15,18 +15,17 @@ import java.util.Optional;
 
 @Service
 public class AuthService {
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private UserRoleRepository userRoleRepository;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     public ApiRespDto<?> addUser(SignupReqDto signupReqDto) {
         Optional<User> optionalUser = userRepository.addUser(signupReqDto.toEntity(bCryptPasswordEncoder));
@@ -42,6 +41,7 @@ public class AuthService {
         Optional<User> optionalUser = userRepository.getUserByUsername(signinReqDto.getUsername());
         if (optionalUser.isEmpty()) {
             return new ApiRespDto<>("failed", "사용자 정보를 확인해주세요.", null);
+
         }
         User user = optionalUser.get();
         if (!bCryptPasswordEncoder.matches(signinReqDto.getPassword(), user.getPassword())) {
@@ -55,7 +55,7 @@ public class AuthService {
     public ApiRespDto<?> modifyEmail(Integer userId, ModifyEmailReqDto modifyEmailReqDto) {
         User user = modifyEmailReqDto.toEntity(userId);
         int result = userRepository.updateEmail(user);
-        return new ApiRespDto<>("success", "이메일 수정 성공", result);
+        return new ApiRespDto<>("succsss", "이메일 수정 성공", result);
     }
 
     public ApiRespDto<?> modifyPassword(ModifyPasswordReqDto modifyPasswordReqDto, PrincipalUser principalUser) {

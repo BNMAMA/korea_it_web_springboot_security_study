@@ -1,5 +1,6 @@
 package com.koreait.SpringSecurityStudy.dto;
 
+
 import com.koreait.SpringSecurityStudy.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,9 +10,9 @@ import lombok.Data;
 public class ModifyEmailReqDto {
     private String email;
 
-    public User toEntity(Integer userid) {
+    public User toEntity(Integer userId) {
         return User.builder()
-                .userId(userid)
+                .userId(userId)
                 .email(this.email)
                 .build();
     }

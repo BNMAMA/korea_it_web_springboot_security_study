@@ -49,7 +49,6 @@ public class JwtAuthenticationFilter implements Filter {
                 //서명 위조나 만료 시 예외 발생
                 String id = claims.getId();
                 //UserDetailsService
-
                 Integer userId = Integer.parseInt(id);
                 Optional<User> optionalUser = userRepository.getUserByUserId(userId);
                 optionalUser.ifPresentOrElse((user) -> {

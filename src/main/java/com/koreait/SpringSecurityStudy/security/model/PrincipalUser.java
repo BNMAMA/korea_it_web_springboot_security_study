@@ -1,5 +1,6 @@
 package com.koreait.SpringSecurityStudy.security.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.koreait.SpringSecurityStudy.entity.UserRole;
 import lombok.Builder;
@@ -21,6 +22,7 @@ public class PrincipalUser implements UserDetails {
     private String password;
     private String email;
     private List<UserRole> userRoles;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
