@@ -1,5 +1,6 @@
 package com.koreait.SpringSecurityStudy.dto;
 
+
 import com.koreait.SpringSecurityStudy.entity.OAuth2User;
 import com.koreait.SpringSecurityStudy.entity.User;
 import lombok.Data;
@@ -12,6 +13,7 @@ public class OAuth2SignupReqDto {
     private String password;
     private String provider;
     private String providerUserId;
+
 
     public User toEntity(BCryptPasswordEncoder bCryptPasswordEncoder) {
         return User.builder()
