@@ -20,6 +20,7 @@ public class MailController {
 
     @PostMapping("/send")
     public ResponseEntity<?> sendMail(@RequestBody SendMailReqDto sendMailReqDto, @AuthenticationPrincipal PrincipalUser principalUser) {
+                                                                                    //컨트롤러 매소드 파라미터로 간편하게 정보를 가지고 옴
         return ResponseEntity.ok(mailService.sendMail(sendMailReqDto, principalUser));
     }
 }

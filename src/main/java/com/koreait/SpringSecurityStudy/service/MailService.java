@@ -19,13 +19,15 @@ public class MailService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
+    @Autowired //자바에서 자체적으로 메일을 보내줌
     private JavaMailSender javaMailSender;
 
     @Autowired
     private JwtUtil jwtUtil;
 
-    public ApiRespDto<?> sendMail(SendMailReqDto sendMailReqDto, PrincipalUser principalUser) {
+
+    public ApiRespDto<?> sendMail(SendMailReqDto sendMailReqDto, PrincipalUser principalUser){
+                                     //principalUser는 정보 확인용(가지고 있는 정보 <-> 입력 정보)
         if (!principalUser.getEmail().equals(sendMailReqDto.getEmail())) {
             return new ApiRespDto<>("failed", "잘못된 접근입니다.", null);
         }
@@ -36,18 +38,20 @@ public class MailService {
         }
         User user = optionalUser.get();
 
-        boolean hasTempRole = user.getUserRoles().stream()
+        boolean hasTempRole = user.getUserRoles().stream()//연속되게 해줌
                 .anyMatch(userRole -> userRole.getRoleId() == 3);
 
         if (!hasTempRole) {
             return new ApiRespDto<>("failed", "인증이 필요한 계정이 아닙니다.", null);
         }
-        String token = jwtUtil.generateMailVerifyToken(user.getUserId().toString());
+        String token = jwtUtil.generateMailVerifyToken (user.getUserId().toString());
+                                //->String으로 입력을 받아서 toString으로 받는다
+
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(user.getEmail());
-        message.setSubject("이메일 인증 입니다.");
-        message.setText("링클르 클릭해 인증을 완료해 주세요. : " +
+        message.setTo(user.getEmail()); //수신자 이메일
+        message.setSubject("이메일 인증 입니다."); //메일의 제목
+        message.setText("링크를 클릭해 인증을 완료해 주세요. : " +  //메일 내용
                 "http://localhost:8080/mail/verify?verifyToken=" + token);
         javaMailSender.send(message);
 
