@@ -79,22 +79,25 @@ public class SecurityConfig {
         // 특정 요청 URL에 대한 권한 설정
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/auth/test").hasRole("ADMIN");
-            //권한을 ROLE_ADMIN, ROLE_USER처럼 저장했다면 -> hasRole("ADMIN") 가능
+            //권한을 ROLE_ADMIN, ROLE_USER 처럼 저장했다면 -> hasRole("ADMIN") 가능
             //권한을 그냥 ADMIN, USER 이렇게 저장했다면 -> hasAuthority("ADMIN") 사용
-            auth.requestMatchers("/auth/signup", "/auth/signin", "/oauth2/**", "/login/oauth2/**").permitAll();
+            auth.requestMatchers("/auth/signup","/auth/signin", "/oauth2/**",
+                    "/login/oauth2/**", "/mail/verify").permitAll();
             auth.anyRequest().authenticated();
         });
 
-        // 요청이 들어오면 Spring Security의 filterchain을 탄다
-        // 여기서 여러 필터 중 하나가 OAuth2 요청을 감지
-        // 감지되면 해당 provider의 로그인 페이지로 리디렉션함
-        http.oauth2Login(oauth2 ->
+        //요청이 들어오면 Spring Security의 filterChain을 탄다
+        //여기서 여러 필터 중 하나가 OAuth2 요청을 감지
+        //감지되면 해당 provider의 로그인 페이지로 리디렉션함
+        http.oauth2Login(oauth2 -> oauth2
                 //OAuth2 로그인 요청이 성공하고 사용자 정보를 가져오는 과정 설정
-                oauth2.userInfoEndpoint(userInfo ->
-                                //사용자 정보 요청이 완료가 되면 이 커스텀 서비스로 OAuth2User를 처리하겠다고 설정
-                                userInfo.userService(oAuth2PrincipalUserService))
-                        //OAuth2 인증이 최종적으로 성공한 후 (사용자 정보 파싱이 끝난 후) 실행할 핸들러 설정
-                        .successHandler(oAuth2SuccessHandler));
+                .userInfoEndpoint(userInfo ->
+                        //사용자 정보 요청이 완료가 되면 이 커스텀 서비스로 OAuth2User를 처리하겠다고 설정
+                        userInfo.userService(oAuth2PrincipalUserService))
+                //OAuth2 인증이 최종적으로 성공한 후 (사용자 정보 파싱이 끝난 후) 실행할 핸들러 설정
+                .successHandler(oAuth2SuccessHandler)
+        );
+
 
         return http.build();
     }

@@ -14,6 +14,15 @@ public class UserRoleRepository {
     private UserRoleMapper userRoleMapper;
 
     public Optional<UserRole> addUserRole(UserRole userRole) {
-        return userRoleMapper.insert(userRole) < 1 ? Optional.empty() : Optional.of(userRole);
+        return userRoleMapper.insert(userRole) < 1
+                ? Optional.empty() : Optional.of(userRole);
+    }
+
+    public Optional<UserRole> getUserRoleByUserIdAndRoleId(Integer userId, Integer roleId) {
+        return userRoleMapper.getUserRoleByUserIdAndRoleId(userId, roleId);
+    }
+
+    public int updateRoleId(Integer userId, Integer userRoleId) {
+        return userRoleMapper.updateRoleId(userId, userRoleId);
     }
 }
